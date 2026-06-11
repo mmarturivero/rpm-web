@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://rpmmoviles.com.ar/sitemap.xml
