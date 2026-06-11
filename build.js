@@ -48,7 +48,7 @@ function head(meta) {
   <title>${esc(meta.title)}</title>
   <meta name="description" content="${esc(meta.description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="theme-color" content="#0E2A47" />
+  <meta name="theme-color" content="#c1272d" />
   <link rel="canonical" href="${esc(meta.url)}" />
 
   <meta property="og:type" content="${meta.ogType || "website"}" />
@@ -103,7 +103,7 @@ const FOOTER = `
       <div class="footer__grid">
         <div class="footer__brand">
           <img src="/assets/logo.svg" alt="RPM Móviles" width="168" height="44" />
-          <p style="color:#9fb6d4; max-width:280px">Concesionaria de autos usados seleccionados en CABA. Comprá o vendé con confianza, simple y transparente.</p>
+          <p style="color:#b0b0b0; max-width:280px">Concesionaria de autos usados seleccionados en CABA. Comprá o vendé con confianza, simple y transparente.</p>
         </div>
         <div><h4>Navegación</h4><ul>
           <li><a href="/#catalogo">Comprar auto</a></li>
