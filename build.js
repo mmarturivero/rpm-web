@@ -19,6 +19,9 @@ const { CONFIG, formatPrice, formatKm } = require("./js/config.js");
 const { VEHICLES } = require("./js/data.js");
 
 const ROOT = __dirname;
+// Directorio de salida que publica Vercel (autocontenido). El código fuente
+// queda en la raíz; acá se copian los estáticos + se generan las páginas.
+const OUT = path.join(ROOT, "public");
 const SITE = CONFIG.siteUrl.replace(/\/$/, "");
 const PLACEHOLDER = "/assets/placeholder-car.svg";
 const OG_FALLBACK = `${SITE}/assets/og-image.jpg`;
@@ -380,17 +383,27 @@ Sitemap: ${SITE}/sitemap.xml
 }
 
 /* ---------- Run ---------- */
+// Estáticos a copiar tal cual desde la raíz hacia public/
+const STATIC = ["index.html", "css", "js", "assets"];
+
 function run() {
-  // Limpieza de /autos generado previamente
-  const autosDir = path.join(ROOT, "autos");
-  if (fs.existsSync(autosDir)) fs.rmSync(autosDir, { recursive: true, force: true });
+  // 1. Limpiar y recrear el directorio de salida
+  fs.rmSync(OUT, { recursive: true, force: true });
+  ensureDir(OUT);
 
-  VEHICLES.forEach((v) => write(path.join(ROOT, "autos", v.id, "index.html"), vehiclePage(v)));
-  write(path.join(ROOT, "autos", "index.html"), autosIndexPage());
-  write(path.join(ROOT, "sitemap.xml"), sitemap());
-  write(path.join(ROOT, "robots.txt"), robots());
+  // 2. Copiar los estáticos del sitio (home, estilos, scripts, imágenes)
+  STATIC.forEach((item) => {
+    const src = path.join(ROOT, item);
+    if (fs.existsSync(src)) fs.cpSync(src, path.join(OUT, item), { recursive: true });
+  });
 
-  console.log(`✅ Build OK: ${VEHICLES.length} fichas + /autos/ + sitemap.xml + robots.txt`);
+  // 3. Generar las páginas dinámicas dentro de public/
+  VEHICLES.forEach((v) => write(path.join(OUT, "autos", v.id, "index.html"), vehiclePage(v)));
+  write(path.join(OUT, "autos", "index.html"), autosIndexPage());
+  write(path.join(OUT, "sitemap.xml"), sitemap());
+  write(path.join(OUT, "robots.txt"), robots());
+
+  console.log(`✅ Build OK → public/  (home + ${VEHICLES.length} fichas + /autos/ + sitemap.xml + robots.txt)`);
 }
 
 run();

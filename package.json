@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "dev": "node build.js && python3 -m http.server 8080",
-    "serve": "python3 -m http.server 8080"
+    "dev": "node build.js && python3 -m http.server 8080 -d public",
+    "serve": "python3 -m http.server 8080 -d public"
   },
   "license": "UNLICENSED"
 }

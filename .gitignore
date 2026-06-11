@@ -1,0 +1,12 @@
+# Salida del build (se regenera con `node build.js`; Vercel la crea en cada deploy)
+/public/
+
+# Artefactos viejos del build (ya no se generan en la raíz)
+/autos/
+/sitemap.xml
+/robots.txt
+
+# Node
+node_modules/
+.DS_Store
+.vercel

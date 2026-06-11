@@ -13,17 +13,19 @@ HTML + CSS + JS vanilla. Las fichas de cada auto se **generan como HTML estátic
 pequeño script de Node (sin frameworks ni dependencias).
 
 ```bash
-# 1. Generar las páginas de cada auto + sitemap + robots
+# 1. Generar el sitio completo dentro de public/ (estáticos + fichas + sitemap + robots)
 npm run build          # (equivale a: node build.js)
 
-# 2. Levantar un servidor local en la raíz (recomendado: las rutas son root-relativas)
+# 2. Levantar un servidor local sirviendo public/
 npm run serve          # http://localhost:8080
 # o todo junto:
 npm run dev
 ```
 
-> Las páginas usan rutas **root-relativas** (`/css`, `/js`, `/autos/...`). Sirvas siempre desde
-> la raíz del dominio (en producción) o con un server local apuntando a la carpeta del proyecto.
+> El build copia los estáticos (`index.html`, `css/`, `js/`, `assets/`) y genera las páginas
+> dinámicas dentro de **`public/`**, que es lo único que se publica. El código fuente queda en
+> la raíz. Las páginas usan rutas **root-relativas** (`/css`, `/js`, `/autos/...`), por eso se
+> sirve `public/` como raíz del dominio. La carpeta `public/` está en `.gitignore` (se regenera).
 
 ---
 
