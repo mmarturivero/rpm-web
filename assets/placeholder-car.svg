@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Foto del vehículo no disponible">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9eef5"/>
+      <stop offset="1" stop-color="#d6deea"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#bg)"/>
+  <g fill="#9fb0c7">
+    <path d="M92 168c-6 0-11-5-11-11v-14c0-4 2-8 6-10l16-8 18-26c3-5 8-8 14-8h70c5 0 10 2 13 6l20 24 34 8c7 2 12 8 12 15v13c0 6-5 11-11 11h-6a22 22 0 0 1-44 0h-66a22 22 0 0 1-44 0z"/>
+  </g>
+  <g fill="#e9eef5">
+    <circle cx="136" cy="170" r="11"/>
+    <circle cx="246" cy="170" r="11"/>
+  </g>
+  <text x="200" y="232" font-family="Arial, sans-serif" font-size="13" fill="#8294ad" text-anchor="middle">RPM Móviles</text>
+</svg>
