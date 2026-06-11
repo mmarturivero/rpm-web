@@ -24,7 +24,7 @@ const ROOT = __dirname;
 const OUT = path.join(ROOT, "public");
 const SITE = CONFIG.siteUrl.replace(/\/$/, "");
 const PLACEHOLDER = "/assets/placeholder-car.svg";
-const OG_FALLBACK = `${SITE}/assets/og-image.jpg`;
+const OG_FALLBACK = `${SITE}/assets/og-image.png`;
 
 /* ---------- Helpers ---------- */
 const esc = (s) => String(s == null ? "" : s)
@@ -48,7 +48,7 @@ function head(meta) {
   <title>${esc(meta.title)}</title>
   <meta name="description" content="${esc(meta.description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="theme-color" content="#0E2A47" />
+  <meta name="theme-color" content="#c1272d" />
   <link rel="canonical" href="${esc(meta.url)}" />
 
   <meta property="og:type" content="${meta.ogType || "website"}" />
@@ -60,7 +60,9 @@ function head(meta) {
   <meta property="og:image" content="${esc(meta.image || OG_FALLBACK)}" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -73,7 +75,7 @@ function head(meta) {
 const HEADER = `
   <header class="header">
     <div class="container nav">
-      <a href="/" aria-label="RPM Móviles - Inicio"><img src="/assets/logo.svg" alt="RPM Móviles" class="nav__logo" width="168" height="44" /></a>
+      <a href="/" aria-label="RPM Móviles - Inicio"><img src="/assets/logo.svg" alt="RPM Móviles" class="nav__logo nav__logo--full" width="353" height="30" /><img src="/assets/logo-compact.svg" alt="RPM Móviles" class="nav__logo nav__logo--compact" width="157" height="34" /></a>
       <nav class="nav__links" aria-label="Navegación principal">
         <a href="/#catalogo">Comprar auto</a>
         <a href="/#vender">Vender mi auto</a>
@@ -102,8 +104,8 @@ const FOOTER = `
     <div class="container">
       <div class="footer__grid">
         <div class="footer__brand">
-          <img src="/assets/logo.svg" alt="RPM Móviles" width="168" height="44" />
-          <p style="color:#9fb6d4; max-width:280px">Concesionaria de autos usados seleccionados en CABA. Comprá o vendé con confianza, simple y transparente.</p>
+          <img src="/assets/logo-white.svg" alt="RPM Móviles" width="280" height="24" />
+          <p style="color:#b0b0b0; max-width:280px">Concesionaria de autos usados seleccionados en CABA. Comprá o vendé con confianza, simple y transparente.</p>
         </div>
         <div><h4>Navegación</h4><ul>
           <li><a href="/#catalogo">Comprar auto</a></li>
