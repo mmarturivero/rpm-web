@@ -139,7 +139,14 @@ p  { color: var(--c-muted); }
   border-bottom: 1px solid var(--c-line);
 }
 .nav { display: flex; align-items: center; gap: 16px; height: 68px; }
-.nav__logo { height: 34px; width: auto; }
+.nav__logo { width: auto; display: block; }
+.nav__logo--full { height: 30px; }
+.nav__logo--compact { height: 34px; }
+.nav__logo--compact { display: none; }   /* en desktop se muestra el lockup completo */
+@media (max-width: 560px) {
+  .nav__logo--full { display: none; }
+  .nav__logo--compact { display: block; } /* en mobile, marca compacta (badge + RPM) */
+}
 .nav__links { display: none; gap: 26px; margin-inline: auto; }
 .nav__links a { font-weight: 600; color: var(--c-navy); font-size: .96rem; position: relative; }
 .nav__links a::after {
@@ -461,7 +468,7 @@ select.input {
 .footer h4 { color: #fff; font-size: 1rem; margin-bottom: 14px; }
 .footer a { color: #cccccc; transition: color var(--t); }
 .footer a:hover { color: var(--c-primary); }
-.footer__brand img { filter: brightness(0) invert(1); height: 34px; margin-bottom: 14px; }
+.footer__brand img { width: 280px; max-width: 100%; height: auto; margin-bottom: 14px; }
 .footer ul { list-style: none; padding: 0; display: grid; gap: 10px; }
 .footer__contact li { display: flex; gap: 10px; align-items: flex-start; }
 .footer__contact .ico { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 3px; color: var(--c-primary); }
