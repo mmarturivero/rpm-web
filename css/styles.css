@@ -509,3 +509,44 @@ body { padding-bottom: 76px; } /* deja espacio para la action-bar en mobile */
 }
 
 body.no-scroll { overflow: hidden; }
+
+/* ============================ 15. FICHA DE VEHÍCULO (/autos/<id>/) ============================ */
+.breadcrumb { padding-top: 18px; }
+.breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; font-size: .85rem; color: var(--c-muted); }
+.breadcrumb a { color: var(--c-muted); }
+.breadcrumb a:hover { color: var(--c-primary); }
+.breadcrumb li:not(:last-child)::after { content: "›"; margin-left: 6px; color: #aab6c8; }
+.breadcrumb [aria-current] { color: var(--c-navy); font-weight: 600; }
+
+.vehicle { padding-block: 24px var(--pad-section); }
+.vehicle__layout { display: grid; gap: 28px; }
+
+.vehicle__gallery { background: var(--c-bg-soft); border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--c-line); }
+.vehicle__gallery .gallery__main { aspect-ratio: 16 / 10; }
+
+/* Tarjeta CTA lateral (sticky en desktop) */
+.vehicle__cta {
+  background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-lg);
+  padding: 22px; box-shadow: var(--sh-md); align-self: start;
+}
+.vehicle__cta h1 { font-size: 1.4rem; }
+.vehicle__cta .price { font-size: 2rem; font-weight: 800; color: var(--c-navy); margin: 6px 0 2px; }
+.vehicle__cta .price-note { font-size: .82rem; color: var(--c-muted); margin-bottom: 14px; }
+.vehicle__cta .cta-stack { display: grid; gap: 10px; margin-top: 8px; }
+.vehicle__cta .reassure { display: grid; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--c-line); }
+.vehicle__cta .reassure span { display: flex; gap: 8px; align-items: center; font-size: .85rem; color: var(--c-muted); }
+.vehicle__cta .reassure .ico { width: 16px; height: 16px; color: var(--c-wa); flex: 0 0 auto; }
+.share { display: flex; gap: 8px; align-items: center; margin-top: 14px; font-size: .85rem; color: var(--c-muted); flex-wrap: wrap; }
+.share a, .share button { color: var(--c-primary); font-weight: 600; }
+.share a:hover, .share button:hover { text-decoration: underline; }
+
+.vehicle__section { margin-top: 36px; }
+.vehicle__section h2 { font-size: 1.3rem; margin-bottom: 16px; }
+.vehicle__desc p { color: var(--c-ink); max-width: 70ch; }
+
+.related-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+@media (min-width: 920px) {
+  .vehicle__layout { grid-template-columns: 1.55fr 1fr; align-items: start; }
+  .vehicle__cta { position: sticky; top: 84px; }
+}

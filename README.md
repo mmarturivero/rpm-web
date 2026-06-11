@@ -1,186 +1,133 @@
 # RPM Móviles — Sitio web
 
-Landing comercial responsive para **RPM Móviles**, concesionaria de autos usados en Argentina.
-Objetivo: **generar más consultas comerciales y más ventas** (comprar y vender autos), con foco en
-confianza, claridad y conversión por WhatsApp. Inspirada en la UX de Kavak, con identidad propia
-más cercana y humana.
+Sitio comercial responsive para **RPM Móviles**, concesionaria de autos usados en CABA.
+Objetivo: **generar más leads, consultas por WhatsApp, captación de usados, ventas y
+posicionamiento orgánico en Google**. UX inspirada en Kavak / Mercado Libre Autos / Carvana,
+con identidad propia más cercana y humana.
 
 ---
 
 ## 🚀 Cómo correrlo
 
-No requiere build ni dependencias. Es HTML + CSS + JS vanilla.
+HTML + CSS + JS vanilla. Las fichas de cada auto se **generan como HTML estático** con un
+pequeño script de Node (sin frameworks ni dependencias).
 
 ```bash
-# Opción 1: abrir directamente
-open index.html
+# 1. Generar las páginas de cada auto + sitemap + robots
+npm run build          # (equivale a: node build.js)
 
-# Opción 2: servidor local (recomendado, evita restricciones de CORS)
-python3 -m http.server 8000
-# luego abrir http://localhost:8000
+# 2. Levantar un servidor local en la raíz (recomendado: las rutas son root-relativas)
+npm run serve          # http://localhost:8080
+# o todo junto:
+npm run dev
 ```
+
+> Las páginas usan rutas **root-relativas** (`/css`, `/js`, `/autos/...`). Sirvas siempre desde
+> la raíz del dominio (en producción) o con un server local apuntando a la carpeta del proyecto.
 
 ---
 
-## ⚙️ Qué editar (sin tocar código)
-
-Casi todo lo "de negocio" vive en dos archivos:
+## ⚙️ Qué editar (sin tocar la lógica)
 
 | Archivo | Qué contiene |
 |---|---|
-| **`js/config.js`** | WhatsApp, teléfono, email, Instagram, dirección, horarios, métricas, moneda y mensajes base. Buscá los comentarios `// EDITAR`. |
+| **`js/config.js`** | WhatsApp, teléfono, email, Instagram, dirección, horarios, métricas, moneda, dominio (`siteUrl`) y mensajes de WhatsApp. Todo centralizado. |
 | **`js/data.js`** | El stock de autos (array `VEHICLES`). Agregar/editar/borrar autos acá. |
 
-> ⚠️ El número de WhatsApp va en formato internacional **sin** `+`, espacios ni guiones. Ej: `5491112345678`.
+**Después de editar `data.js`, regenerá las páginas:** `npm run build`.
+
+> ⚠️ WhatsApp en formato internacional sin `+`, espacios ni guiones (ej: `5491123330202`).
+> Datos actuales ya cargados: WhatsApp `11 2333-0202`, tel `11 7079-8444`,
+> IG `@rpm_moviles`, Av. de los Constituyentes 4636 (CABA), comercial@rpmmoviles.com.ar.
 
 ---
 
-## 🏛️ Arquitectura de archivos
+## 🏛️ Arquitectura
 
 ```
 rpm-web/
-├── index.html                 # Estructura + todas las secciones + SEO/metadata + datos estructurados
+├── index.html                 # Home (hero, catálogo filtrable, vender, confianza, FAQ…)
+├── build.js                   # Generador estático: fichas + /autos/ + sitemap + robots
+├── package.json               # Scripts: build / dev / serve
 ├── css/
 │   └── styles.css             # Design system (tokens) + componentes (mobile-first)
 ├── js/
-│   ├── config.js              # ⚙️ Config editable (contacto, redes, textos, moneda)
-│   ├── data.js                # 🚗 Stock de autos (listo para reemplazar por API/CRM)
-│   └── app.js                 # Lógica: render, filtros, orden, buscador, modal, forms→WhatsApp
+│   ├── config.js              # ⚙️ Config editable (isomórfico: navegador + Node)
+│   ├── data.js                # 🚗 Stock (isomórfico, listo para API/CRM)
+│   ├── ui.js                  # UI compartida (header, WhatsApp, galería, contacto, tracking)
+│   └── catalog.js             # Lógica de la home (filtros, orden, buscador, form vender)
 ├── assets/
-│   ├── logo.svg               # Logo provisional (reemplazar por el oficial)
+│   ├── logo.svg               # Logo PLACEHOLDER (reemplazar por el oficial)
 │   └── placeholder-car.svg    # Imagen fallback cuando un auto no tiene foto
-└── README.md
+│
+│  ── generados por build.js (commiteados para deploy) ──
+├── autos/
+│   ├── index.html             # Índice de stock /autos/
+│   └── <id>/index.html        # Ficha individual de cada auto → /autos/<id>/
+├── sitemap.xml
+└── robots.txt
 ```
 
 ### Arquitectura de páginas
-- **Single page** (landing) con navegación por anclas: Inicio → Catálogo → Vender → Confianza → Cómo funciona → Testimonios → FAQ → Footer.
-- **Detalle de vehículo = modal** (mejor en mobile, sin recarga). Preparado para migrar a página propia (`/auto/:id`) cuando haya backend/SSR para SEO de cada unidad.
+- **Home** (`/`): single page con navegación por anclas + catálogo filtrable (client-side).
+- **Índice de stock** (`/autos/`): listado completo, SEO-friendly.
+- **Ficha por vehículo** (`/autos/<id>/`): **página propia con URL amigable**, HTML estático
+  para máxima indexación y enlaces compartibles. Estructura tipo Kavak/ML/Carvana:
+  galería + CTA sticky con precio + ficha técnica + descripción + documentación + relacionados.
+
+### SEO por ficha (automático en `build.js`)
+- ✅ URL amigable (`/autos/marca-modelo-anio/`)
+- ✅ `<title>` dinámico · meta description dinámica
+- ✅ Open Graph + Twitter Card (imagen, título, descripción por auto)
+- ✅ `canonical` por página
+- ✅ **Schema.org `Car` + `Offer`** (precio, moneda, km, combustible, transmisión, condición usado)
+- ✅ **Schema.org `BreadcrumbList`** + breadcrumb visible
+- ✅ `ItemList` en `/autos/`, `AutoDealer` en la home
+- ✅ `sitemap.xml` + `robots.txt` regenerados en cada build
 
 ---
 
-## 🧭 Wireframe textual
-
-```
-┌─────────────────────────────────────────────┐
-│ HEADER fijo: Logo | Menú | Comprar | Vender  │
-│              | WhatsApp                        │
-├─────────────────────────────────────────────┤
-│ HERO (fondo navy)                             │
-│  Título fuerte + subtítulo de confianza       │
-│  [Ver autos disponibles] [Quiero vender]      │
-│  ✔ verificados ✔ tasación ✔ atención          │
-│  ┌── BUSCADOR: Marca | Modelo | Año | $ ──┐   │
-│  └──────────────[ Buscar autos ]──────────┘   │
-├─────────────────────────────────────────────┤
-│ CATÁLOGO                                      │
-│  [Filtros]  | Toolbar: N resultados | Orden   │
-│  marca      | ┌────┐ ┌────┐ ┌────┐            │
-│  modelo     | │card│ │card│ │card│            │
-│  tipo/año   | └────┘ └────┘ └────┘            │
-│  km/precio  | (cada card: foto, datos, $,     │
-│  ☑ financ.  |  estado, [Ver detalle][Consultar]│
-├─────────────────────────────────────────────┤
-│ VENDÉ TU AUTO (navy)                          │
-│  Beneficio + 3 pasos | Formulario cotización  │
-├─────────────────────────────────────────────┤
-│ CONFIANZA: 6 bloques + métricas               │
-├─────────────────────────────────────────────┤
-│ CÓMO FUNCIONA: [Comprar][Vender] → 4 pasos    │
-├─────────────────────────────────────────────┤
-│ TESTIMONIOS: 3 reseñas                         │
-├─────────────────────────────────────────────┤
-│ FAQ: acordeón (6 preguntas)                   │
-├─────────────────────────────────────────────┤
-│ FOOTER: marca | nav | redes | contacto        │
-└─────────────────────────────────────────────┘
- [Modal detalle] · [Action-bar mobile] · [FAB WhatsApp desktop]
-```
-
----
-
-## 🧩 Componentes
-
-| Componente | Dónde | Reutilizable |
-|---|---|---|
-| Botones (`.btn` + variantes `--primary/--accent/--wa/--ghost/--light`) | global | ✅ |
-| Header + menú mobile | `index.html` / `app.js` | — |
-| Buscador rápido (`.searchbar`) | hero | — |
-| Panel de filtros (`.filters`) | catálogo | — |
-| Card de vehículo (`cardTemplate`) | `app.js` | ✅ (data-driven) |
-| Modal de detalle + galería | `app.js` | ✅ |
-| Formulario (`.form`) | vender | ✅ |
-| Trust card / Stat / Howto card / Testimonio / FAQ item | secciones | ✅ |
-| Toast, Action-bar, FAB WhatsApp | global | ✅ |
-
----
-
-## ✍️ Copywriting (resumen por sección)
-
-- **Hero:** *"Tu próximo auto, sin vueltas y con confianza."* + subtítulo de simplicidad y trato humano.
-- **Catálogo:** *"Elegí entre nuestros autos seleccionados"* — refuerza curaduría.
-- **Vender:** *"Vendé tu auto rápido, seguro y al mejor precio."* + 3 pasos + microcopy de privacidad.
-- **Confianza:** 6 pilares (selección, seguridad, atención, tasación, documentación, clientes).
-- **Cómo funciona:** dos recorridos (comprar/vender) en 4 pasos cada uno.
-- **FAQ:** financiación, usado en parte de pago, verificación, visita, documentación, tasación.
-- **CTAs:** "Ver autos disponibles", "Quiero vender mi auto", "Consultar por WhatsApp", "Cotizar mi auto".
+## 📈 Medición de conversiones (CRO)
+`ui.js` empuja eventos a `window.dataLayer` (listo para Google Tag Manager / GA4):
+`whatsapp_click`, `lead_submit`, `search_submit`, `share_click`. Mapearlos como conversiones
+al instalar GTM. El lead del formulario también pasa por `sendToCRM()` (hook en `catalog.js`).
 
 ---
 
 ## 🔌 Integraciones
-
-### WhatsApp
-Todos los CTA de contacto y los formularios arman un mensaje prellenado y abren `wa.me`.
-Los textos base están en `CONFIG.waMessages`.
-
-### CRM (preparado, no conectado)
-En `app.js` la función `sendToCRM(payload)` es el punto de integración. Hoy loguea en consola;
-reemplazar por un `fetch()` a tu endpoint para capturar leads (compra/venta).
-
-### Carga dinámica de stock (futuro)
-`data.js` expone un array `VEHICLES`. Para conectar a una API, reemplazar por:
-```js
-const VEHICLES = await (await fetch('/api/vehiculos')).json();
-```
-La capa de render (`renderCatalog`) no necesita cambios.
+- **WhatsApp:** todos los CTA y formularios abren `wa.me` con mensaje prellenado (incluye link del auto).
+- **CRM (preparado):** `sendToCRM(payload)` en `catalog.js` → reemplazar por `fetch()` a tu endpoint.
+- **Stock dinámico (futuro):** reemplazar el array de `data.js` por `await fetch('/api/vehiculos')` y rebuild.
 
 ---
 
 ## ✅ Checklist de implementación
 
-**Listo en esta versión**
-- [x] Header fijo + menú mobile + CTAs
-- [x] Hero con posicionamiento + buscador rápido
-- [x] Filtros (marca, modelo, tipo, año, km, precio, financiación) + orden
-- [x] Catálogo data-driven con cards
-- [x] Modal de detalle con galería y CTA fijo
-- [x] Sección "Vendé tu auto" + formulario → WhatsApp
-- [x] Confianza + métricas
-- [x] Cómo funciona (comprar/vender)
-- [x] Testimonios (placeholders)
-- [x] FAQ (acordeón)
-- [x] Footer con contacto/redes/horarios
-- [x] Action-bar mobile + FAB WhatsApp
-- [x] SEO básico, Open Graph y datos estructurados (AutoDealer)
-- [x] Estados hover/focus, accesibilidad básica, `prefers-reduced-motion`
+**Listo**
+- [x] Home: header fijo, hero + buscador, catálogo filtrable, vender, confianza, cómo funciona, testimonios, FAQ, footer
+- [x] **Páginas individuales por auto** con SEO completo (title/meta/OG/Schema.org/canonical)
+- [x] Índice `/autos/`, `sitemap.xml`, `robots.txt`
+- [x] CTAs y formularios → WhatsApp con mensaje prellenado
+- [x] Datos de contacto centralizados en `config.js`
+- [x] Tracking de conversiones (dataLayer / GTM-ready) + hook CRM
+- [x] Responsive mobile-first, action-bar mobile + FAB WhatsApp, hover/focus, `prefers-reduced-motion`
 
 **Antes de publicar (a cargo de RPM)**
-- [ ] Cargar datos reales en `config.js` (WhatsApp, dirección, horarios, redes)
 - [ ] Reemplazar `logo.svg` por el logo oficial
-- [ ] Cargar stock real con fotos en `data.js`
-- [ ] Crear `assets/og-image.jpg` (1200×630) para compartir en redes
+- [ ] Cargar stock real con **fotos** en `data.js` y `npm run build`
+- [ ] Crear `assets/og-image.jpg` (1200×630) para compartir
+- [ ] Confirmar horarios reales en `config.js`
 - [ ] Reemplazar testimonios por reseñas verificadas
-- [ ] Configurar dominio + HTTPS y verificar `canonical`/URLs absolutas
-- [ ] Agregar Google Analytics / Meta Pixel y eventos de conversión (clicks WhatsApp, envío de formularios)
+- [ ] Instalar GTM/GA4 y marcar `whatsapp_click` y `lead_submit` como conversiones
+- [ ] Verificar en Google Search Console + enviar `sitemap.xml`
 
 ---
 
 ## 🔮 Mejoras futuras
-- Página propia por vehículo (`/auto/:id`) con SSR para SEO individual.
-- Galería con carga real de múltiples fotos + zoom/lightbox.
-- Backend/CRM real + panel de administración para cargar autos sin tocar código.
-- Filtros con contador por opción y URL compartible (querystring).
-- Calculadora de financiación / cuotas estimadas.
-- Comparador de vehículos.
-- Multimoneda (USD/ARS) con cotización.
-- Tests E2E (Playwright) y Lighthouse en CI.
-- i18n y modo oscuro.
+- Backend/CRM real + panel de administración (cargar autos sin tocar código ni rebuild manual).
+- GitHub Action que ejecute `npm run build` automáticamente al cambiar `data.js`.
+- Galería con fotos reales + lightbox/zoom.
+- Filtros con URL compartible (querystring) y contador por opción.
+- Calculadora de cuotas / financiación.
+- Comparador de vehículos y favoritos.
+- Multimoneda (USD/ARS) y tests E2E + Lighthouse en CI.
