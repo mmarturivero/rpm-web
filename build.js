@@ -15,7 +15,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { CONFIG, formatPrice, formatKm } = require("./js/config.js");
+const { CONFIG, formatPrice, formatKm, ICONS } = require("./js/config.js");
 const { VEHICLES } = require("./js/data.js");
 
 const ROOT = __dirname;
@@ -213,7 +213,7 @@ function vehiclePage(v) {
             </a>
             <div class="card__body">
               <a href="/autos/${r.id}/"><h3 class="card__title">${esc(r.marca)} ${esc(r.modelo)}</h3></a>
-              <div class="card__meta"><span>📅 ${r.anio}</span><span>🛣️ ${formatKm(r.km)}</span></div>
+              <div class="card__meta"><span>${ICONS.calendar} ${r.anio}</span><span>${ICONS.gauge} ${formatKm(r.km)}</span></div>
               <div class="card__price">${formatPrice(r.precio)}</div>
               <div class="card__actions">
                 <a class="btn btn--ghost btn--sm" href="/autos/${r.id}/">Ver detalle</a>
@@ -333,9 +333,9 @@ function autosIndexPage() {
       </a>
       <div class="card__body">
         <a href="/autos/${v.id}/"><h3 class="card__title">${esc(v.marca)} ${esc(v.modelo)}</h3></a>
-        <div class="card__meta"><span>📅 ${v.anio}</span><span>🛣️ ${formatKm(v.km)}</span><span>⚙️ ${esc(v.transmision)}</span></div>
+        <div class="card__meta"><span>${ICONS.calendar} ${v.anio}</span><span>${ICONS.gauge} ${formatKm(v.km)}</span><span>${ICONS.gearbox} ${esc(v.transmision)}</span></div>
         <div class="card__price">${formatPrice(v.precio)}</div>
-        <div class="card__state">● ${esc(v.estado)}</div>
+        <div class="card__state">${esc(v.estado)}</div>
         <div class="card__actions">
           <a class="btn btn--ghost btn--sm" href="/autos/${v.id}/">Ver detalle</a>
           <button class="btn btn--wa btn--sm" data-car-wa="${v.id}">Consultar</button>

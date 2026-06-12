@@ -140,7 +140,7 @@
         if (navigator.share) {
           navigator.share({ title, url }).catch(() => {});
         } else if (navigator.clipboard) {
-          navigator.clipboard.writeText(url).then(() => showToast("🔗 Enlace copiado al portapapeles"));
+          navigator.clipboard.writeText(url).then(() => showToast("Enlace copiado al portapapeles"));
         }
         return;
       }

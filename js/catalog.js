@@ -84,12 +84,12 @@
         <div class="card__body">
           <a href="${url}"><h3 class="card__title">${v.marca} ${v.modelo}</h3></a>
           <div class="card__meta">
-            <span>📅 ${v.anio}</span>
-            <span>🛣️ ${formatKm(v.km)}</span>
-            <span>⚙️ ${v.transmision}</span>
+            <span>${ICONS.calendar} ${v.anio}</span>
+            <span>${ICONS.gauge} ${formatKm(v.km)}</span>
+            <span>${ICONS.gearbox} ${v.transmision}</span>
           </div>
           <div class="card__price">${formatPrice(v.precio)}</div>
-          <div class="card__state">● ${v.estado}</div>
+          <div class="card__state">${v.estado}</div>
           <div class="card__actions">
             <a class="btn btn--ghost btn--sm" href="${url}">Ver detalle</a>
             <button class="btn btn--wa btn--sm" data-car-wa="${v.id}">Consultar</button>
@@ -103,8 +103,9 @@
     const cards = $("#cards"), count = $("#resultCount");
     if (!list.length) {
       cards.innerHTML = `<div class="empty">
-        <p>😕 No encontramos autos con esos filtros.</p>
-        <button class="btn btn--primary btn--sm" id="emptyReset" style="margin-top:12px">Limpiar filtros</button>
+        ${ICONS.search}
+        <p>No encontramos autos con esos filtros.</p>
+        <button class="btn btn--ghost btn--sm" id="emptyReset" style="margin-top:14px">Limpiar filtros</button>
       </div>`;
       count.innerHTML = `0 autos <span>encontrados</span>`;
       $("#emptyReset").addEventListener("click", resetFilters);
@@ -136,7 +137,7 @@
       `• Kilómetros: ${data.km || "a confirmar"}\n` +
       `• Estado: ${data.estado}`;
     openWhatsApp(msg, { source: "form_vender" });
-    showToast("¡Listo! Te abrimos WhatsApp para enviar tu cotización 🚗");
+    showToast("Listo. Te abrimos WhatsApp para enviar tu cotización.");
     f.reset();
   }
 
@@ -208,7 +209,7 @@
     const btn = $("#filtersToggle");
     btn.addEventListener("click", function () {
       const open = $("#filters").classList.toggle("open");
-      this.textContent = open ? "✕ Ocultar filtros" : "⚙️ Mostrar filtros";
+      this.innerHTML = ICONS.filter + (open ? " Ocultar filtros" : " Mostrar filtros");
     });
   }
 

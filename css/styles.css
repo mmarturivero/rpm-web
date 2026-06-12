@@ -20,26 +20,33 @@
 
 /* ============================ 1. TOKENS ============================ */
 :root {
-  /* ===== Paleta de marca RPM =====
-     Primario  #c1272d (rojo)  ·  Secundario #000000 (negro)  ·  Acento #FFFFFF (blanco)
-     El verde de WhatsApp y el verde "success" se mantienen por su función/semántica
-     (reconocimiento de WhatsApp y estados positivos), no son colores de identidad. */
-  --c-navy:      #000000;   /* secciones oscuras y títulos (negro de marca) */
-  --c-navy-700:  #1a1a1a;   /* variante para degradados sobre negro */
-  --c-primary:   #c1272d;   /* rojo de marca / CTA principal / links */
-  --c-primary-700:#9e1f24;  /* hover del primario */
-  --c-accent:    #c1272d;   /* acento = rojo de marca (badges, CTA hero) */
-  --c-wa:        #25D366;   /* WhatsApp (marca de plataforma) */
+  /* ===== Sistema de marca RPM — sobrio y premium =====
+     Identidad: BLANCO + NEGRO + GRISES NEUTROS, con ROJO RPM (#c1272d) como
+     ÚNICO color de acento (usado con moderación). Sin azules ni colores ajenos.
+     El verde solo sobrevive en el botón de WhatsApp (marca de plataforma). */
+  --c-black:     #0d0d0d;   /* negro de marca (texto fuerte, superficies oscuras) */
+  --c-navy:      #0d0d0d;   /* alias: secciones oscuras */
+  --c-navy-700:  #161616;   /* variante para degradados */
+
+  --c-red:       #c1272d;   /* ROJO RPM — acento */
+  --c-red-700:   #a11f24;   /* hover del rojo */
+  --c-primary:   #c1272d;   /* alias de acento (compat. de clases) */
+  --c-primary-700:#a11f24;
+  --c-accent:    #c1272d;
+
+  --c-wa:        #25D366;   /* WhatsApp (plataforma) */
   --c-wa-700:    #1da851;
 
-  --c-ink:       #1a1a1a;   /* texto principal (negro suave, legible) */
-  --c-muted:     #5a5a5a;   /* texto secundario (gris neutro) */
-  --c-line:      #e6e6e6;   /* bordes */
-  --c-bg:        #ffffff;   /* fondo (acento blanco) */
-  --c-bg-soft:   #f7f7f7;   /* secciones alternas */
-  --c-bg-soft-2: #f0eeee;
-  --c-success-bg:#e8f7ef;   /* estado positivo (semántico) */
-  --c-success-tx:#157347;
+  --c-ink:       #14110f;   /* texto principal (casi negro) */
+  --c-muted:     #6b6b6b;   /* texto secundario (gris neutro) */
+  --c-faint:     #9a9a9a;   /* texto terciario / metadatos tenues */
+  --c-line:      #e7e7e7;   /* bordes sutiles */
+  --c-line-2:    #dadada;   /* borde un poco más marcado */
+  --c-bg:        #ffffff;   /* fondo */
+  --c-bg-soft:   #f6f6f6;   /* secciones alternas (gris neutro) */
+  --c-bg-soft-2: #efefef;
+  --c-success-bg:#eef3ef;   /* estado positivo (neutro-verdoso muy sutil) */
+  --c-success-tx:#2f6b46;
 
   /* Tipografía */
   --font: "Inter", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
@@ -98,39 +105,58 @@ p  { color: var(--c-muted); }
 .section__head { text-align: center; max-width: 640px; margin: 0 auto clamp(28px, 5vw, 48px); }
 .section__head p { margin-top: 10px; font-size: 1.05rem; }
 .eyebrow {
-  display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--c-primary); margin-bottom: 12px;
+  display: inline-flex; align-items: center; gap: 8px; font-size: .76rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 14px;
 }
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--c-red); display: inline-block; }
 
 .grid { display: grid; gap: 20px; }
 
 /* ============================ 4. BOTONES ============================ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 22px; border-radius: var(--r-pill); font-weight: 700; font-size: .98rem;
-  transition: transform var(--t), background var(--t), box-shadow var(--t), color var(--t);
-  white-space: nowrap; line-height: 1;
+  padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: .96rem;
+  letter-spacing: .005em;
+  transition: transform var(--t), background var(--t), box-shadow var(--t), color var(--t), border-color var(--t);
+  white-space: nowrap; line-height: 1; border: 1.5px solid transparent;
 }
-.btn:active { transform: translateY(1px) scale(.99); }
+.btn:active { transform: translateY(1px); }
 .btn .ico { width: 18px; height: 18px; }
 
-.btn--primary { background: var(--c-primary); color: #fff; box-shadow: var(--sh-sm); }
-.btn--primary:hover { background: var(--c-primary-700); box-shadow: var(--sh-md); }
+/* Íconos de línea (set SVG profesional, reemplazan emojis) */
+.ico-line { width: 17px; height: 17px; flex: 0 0 auto; stroke: currentColor; fill: none;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
 
-.btn--accent { background: var(--c-accent); color: #fff; }
-.btn--accent:hover { filter: brightness(.95); }
+/* PRIMARY = rojo RPM (acción comercial principal) */
+.btn--primary { background: var(--c-red); color: #fff; }
+.btn--primary:hover { background: var(--c-red-700); }
 
+/* ACCENT = alias de primary (compatibilidad de markup) */
+.btn--accent { background: var(--c-red); color: #fff; }
+.btn--accent:hover { background: var(--c-red-700); }
+
+/* DARK = negro estructural (acciones secundarias sobrias) */
+.btn--dark { background: var(--c-black); color: #fff; }
+.btn--dark:hover { background: #000; }
+
+/* WhatsApp */
 .btn--wa { background: var(--c-wa); color: #fff; }
-.btn--wa:hover { background: var(--c-wa-700); box-shadow: var(--sh-md); }
+.btn--wa:hover { background: var(--c-wa-700); }
 
-.btn--ghost { background: transparent; color: var(--c-navy); border: 1.5px solid var(--c-line); }
-.btn--ghost:hover { border-color: var(--c-primary); color: var(--c-primary); }
+/* GHOST = contorno sobre fondo claro */
+.btn--ghost { background: transparent; color: var(--c-ink); border-color: var(--c-line-2); }
+.btn--ghost:hover { border-color: var(--c-ink); }
 
-.btn--light { background: #fff; color: var(--c-navy); box-shadow: var(--sh-sm); }
-.btn--light:hover { box-shadow: var(--sh-md); }
+/* OUTLINE LIGHT = contorno sobre fondo oscuro (hero) */
+.btn--outline-light { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+.btn--outline-light:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+/* LIGHT = sólido blanco sobre fondo oscuro */
+.btn--light { background: #fff; color: var(--c-ink); }
+.btn--light:hover { background: #f0f0f0; }
 
 .btn--block { width: 100%; }
-.btn--sm { padding: 10px 16px; font-size: .9rem; }
+.btn--sm { padding: 10px 16px; font-size: .88rem; }
 
 /* ============================ 5. HEADER / NAV ============================ */
 .header {
@@ -140,8 +166,8 @@ p  { color: var(--c-muted); }
 }
 .nav { display: flex; align-items: center; gap: 16px; height: 68px; }
 .nav__logo { width: auto; display: block; }
-.nav__logo--full { height: 30px; }
-.nav__logo--compact { height: 34px; }
+.nav__logo--full { height: 21px; }
+.nav__logo--compact { height: 24px; }
 .nav__logo--compact { display: none; }   /* en desktop se muestra el lockup completo */
 @media (max-width: 560px) {
   .nav__logo--full { display: none; }
@@ -180,27 +206,28 @@ p  { color: var(--c-muted); }
 /* ============================ 6. HERO ============================ */
 .hero {
   position: relative; color: #fff;
-  background:
-    radial-gradient(1200px 500px at 80% -10%, rgba(193,39,45,.55), transparent 60%),
-    linear-gradient(160deg, #000 0%, #1a1a1a 60%, #000 100%);
-  padding-block: clamp(48px, 8vw, 88px);
-  overflow: hidden;
+  /* Sobrio: negro casi plano con una insinuación de profundidad. Sin glow rojo "tech". */
+  background: linear-gradient(180deg, #111 0%, #0b0b0b 55%, #0d0d0d 100%);
+  padding-block: clamp(64px, 10vw, 120px);
+  overflow: hidden; border-bottom: 3px solid var(--c-red);  /* regla roja fina = acento */
 }
-.hero::after { /* textura sutil */
-  content: ""; position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
-  background-size: 22px 22px; opacity: .6; pointer-events: none;
+/* Marca de agua: el badge del logo, grande y muy tenue → la marca es protagonista */
+.hero__mark {
+  position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
+  width: clamp(280px, 38vw, 520px); height: auto; opacity: .06; pointer-events: none;
+  filter: grayscale(1) brightness(3); z-index: 0;
 }
-.hero__inner { position: relative; z-index: 1; max-width: 760px; }
+.hero__inner { position: relative; z-index: 1; max-width: 720px; }
 .hero h1 {
-  color: #fff; font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.05;
+  color: #fff; font-size: clamp(2.1rem, 5.6vw, 3.5rem); line-height: 1.06;
+  letter-spacing: -.02em; font-weight: 800;
 }
-.hero h1 .hl { color: #fff; background: linear-gradient(120deg, #e0494f, var(--c-primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.hero__sub { color: #e0e0e0; font-size: clamp(1.05rem, 2.5vw, 1.25rem); margin-top: 16px; max-width: 560px; }
-.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-.hero__trust { display: flex; flex-wrap: wrap; gap: 18px 26px; margin-top: 30px; }
-.hero__trust span { display: flex; align-items: center; gap: 8px; color: #d4d4d4; font-size: .92rem; font-weight: 500; }
-.hero__trust .ico { width: 18px; height: 18px; color: var(--c-wa); }
+.hero h1 .hl { color: var(--c-red); -webkit-text-fill-color: var(--c-red); }
+.hero__sub { color: #c4c4c4; font-size: clamp(1.05rem, 2.2vw, 1.2rem); margin-top: 18px; max-width: 540px; line-height: 1.65; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.hero__trust { display: flex; flex-wrap: wrap; gap: 14px 28px; margin-top: 36px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.12); }
+.hero__trust span { display: flex; align-items: center; gap: 9px; color: #cfcfcf; font-size: .9rem; font-weight: 500; }
+.hero__trust .ico-line { width: 18px; height: 18px; color: var(--c-red); stroke-width: 2; }
 
 /* Buscador rápido del hero */
 .searchbar {
@@ -275,35 +302,39 @@ select.input {
 .cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 
 .card {
-  background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-lg);
+  background: #fff; border: 1px solid var(--c-line); border-radius: 16px;
   overflow: hidden; display: flex; flex-direction: column;
   transition: transform var(--t), box-shadow var(--t), border-color var(--t);
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--sh-md); border-color: #d4ddec; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,.10); border-color: var(--c-line-2); }
 
-.card__media { position: relative; aspect-ratio: 4 / 3; background: var(--c-bg-soft); overflow: hidden; }
-.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
-.card:hover .card__media img { transform: scale(1.04); }
+.card__media { position: relative; aspect-ratio: 4 / 3; background: var(--c-bg-soft); overflow: hidden; display: block; }
+.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.card:hover .card__media img { transform: scale(1.05); }
 
 .badge {
-  position: absolute; top: 12px; left: 12px; font-size: .72rem; font-weight: 700;
-  padding: 5px 10px; border-radius: var(--r-pill); background: var(--c-accent); color: #fff;
-  box-shadow: var(--sh-sm);
+  position: absolute; top: 12px; left: 12px; font-size: .68rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  padding: 6px 11px; border-radius: var(--r-pill); background: var(--c-black); color: #fff;
 }
-.badge--fin { left: auto; right: 12px; background: var(--c-success-bg); color: var(--c-success-tx); }
+.badge--fin { left: auto; right: 12px; background: rgba(255,255,255,.95); color: var(--c-ink);
+  text-transform: none; letter-spacing: 0; box-shadow: var(--sh-sm); }
 
-.card__body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-.card__title { font-size: 1.05rem; font-weight: 800; color: var(--c-navy); }
-.card__meta { display: flex; flex-wrap: wrap; gap: 6px 12px; color: var(--c-muted); font-size: .88rem; }
-.card__meta span { display: inline-flex; align-items: center; gap: 5px; }
-.card__price { font-size: 1.35rem; font-weight: 800; color: var(--c-navy); margin-top: 6px; }
-.card__state { font-size: .82rem; color: var(--c-success-tx); font-weight: 600; }
-.card__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.card__body { padding: 18px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.card__title { font-size: 1.06rem; font-weight: 700; color: var(--c-ink); letter-spacing: -.01em; }
+.card__meta { display: flex; flex-wrap: wrap; gap: 7px 14px; color: var(--c-muted); font-size: .85rem; margin-top: 2px; }
+.card__meta span { display: inline-flex; align-items: center; gap: 6px; }
+.card__meta .ico-line { width: 15px; height: 15px; color: var(--c-faint); }
+.card__price { font-size: 1.45rem; font-weight: 800; color: var(--c-ink); margin-top: 8px; letter-spacing: -.02em; }
+.card__state { font-size: .82rem; color: var(--c-muted); font-weight: 500; display: inline-flex; align-items: center; gap: 7px; }
+.card__state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c-red); flex: 0 0 auto; }
+.card__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
 
 .empty {
-  grid-column: 1 / -1; text-align: center; padding: 48px 16px; color: var(--c-muted);
-  border: 2px dashed var(--c-line); border-radius: var(--r-lg);
+  grid-column: 1 / -1; text-align: center; padding: 56px 16px; color: var(--c-muted);
+  border: 1px solid var(--c-line); border-radius: 16px; background: var(--c-bg-soft);
 }
+.empty .ico-line { width: 40px; height: 40px; color: var(--c-faint); margin: 0 auto 14px; stroke-width: 1.4; }
 
 /* ============================ 9. MODAL DETALLE ============================ */
 .modal {
@@ -363,8 +394,8 @@ select.input {
 }
 
 /* ============================ 10. VENDÉ TU AUTO / FORMS ============================ */
-.sell { background: linear-gradient(160deg, #000, #1a1a1a); color: #fff; }
-.sell .eyebrow { color: #e57373; }
+.sell { background: linear-gradient(160deg, #111, #0b0b0b); color: #fff; }
+.sell .eyebrow { color: #b3b3b3; }
 .sell h2 { color: #fff; }
 .sell__grid { display: grid; gap: 32px; }
 .steps { display: grid; gap: 16px; }
@@ -468,7 +499,7 @@ select.input {
 .footer h4 { color: #fff; font-size: 1rem; margin-bottom: 14px; }
 .footer a { color: #cccccc; transition: color var(--t); }
 .footer a:hover { color: var(--c-primary); }
-.footer__brand img { width: 280px; max-width: 100%; height: auto; margin-bottom: 14px; }
+.footer__brand img { width: 196px; max-width: 100%; height: auto; margin-bottom: 16px; }
 .footer ul { list-style: none; padding: 0; display: grid; gap: 10px; }
 .footer__contact li { display: flex; gap: 10px; align-items: flex-start; }
 .footer__contact .ico { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 3px; color: var(--c-primary); }
